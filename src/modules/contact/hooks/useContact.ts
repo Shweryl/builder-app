@@ -20,11 +20,15 @@ export function useContact({
       const result = await mutation.mutateAsync(formData)
       onSuccess?.(result)
     } catch (err) {
-      if (err instanceof TRPCClientError) {
-        if (err.data?.code === "CONFLICT") {
-          onDuplicate?.()
-          return
-        }
+      if (
+        err instanceof TRPCClientError &&
+        typeof err.data === "object" &&
+        err.data !== null &&
+        "code" in err.data &&
+        (err.data as { code?: string }).code === "CONFLICT"
+      ) {
+        onDuplicate?.()
+        return
       }
 
       onError?.("Failed to submit contact")
