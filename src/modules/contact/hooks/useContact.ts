@@ -2,7 +2,6 @@
 
 import { api } from "~/utils/api"
 import { TRPCClientError } from "@trpc/client"
-import type { AppRouter } from "~/server/api/root"
 import type { ContactInput } from "~/modules/contact/logic/contactSchema"
 
 export function useContact({
@@ -21,7 +20,7 @@ export function useContact({
       const result = await mutation.mutateAsync(formData)
       onSuccess?.(result)
     } catch (err) {
-      if (err instanceof TRPCClientError<AppRouter>) {
+      if (err instanceof TRPCClientError) {
         if (err.data?.code === "CONFLICT") {
           onDuplicate?.()
           return
