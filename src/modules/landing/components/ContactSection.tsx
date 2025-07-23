@@ -14,7 +14,7 @@ export function ContactSection() {
     email: "",
   })
 
-  const [errors, setErrors] = useState<{ [key: string]: string }>({})
+  const [errors, setErrors] = useState<Record<string, string>>({})
 
   const { submit, isLoading } = useContact({
     onSuccess: () => {
@@ -34,7 +34,7 @@ export function ContactSection() {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    const newErrors: typeof errors = {}
+    const newErrors: Record<string, string> = {}
     if (!formData.firstName) newErrors.firstName = "First name is required"
     if (!formData.lastName) newErrors.lastName = "Last name is required"
     if (!formData.phone) newErrors.phone = "Phone is required"
@@ -46,7 +46,7 @@ export function ContactSection() {
     }
 
     setErrors({})
-    submit({ ...formData })
+    void submit({ ...formData }) // ✅ Fix floating promise
   }
 
   return (

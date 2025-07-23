@@ -6,7 +6,7 @@ export function useContact({
   onSuccess,
   onError,
 }: {
-  onSuccess?: (data: any) => void
+  onSuccess?: (data: unknown) => void // ✅ Replace `any` with `unknown`
   onError?: (message: string) => void
 } = {}) {
   const mutation = api.contact.submit.useMutation()
@@ -20,7 +20,8 @@ export function useContact({
     try {
       const result = await mutation.mutateAsync(formData)
       onSuccess?.(result)
-    } catch (err) {
+    } catch {
+      // ✅ Removed unused `err` variable
       onError?.("Failed to submit contact")
     }
   }
