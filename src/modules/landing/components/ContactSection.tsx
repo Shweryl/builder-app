@@ -5,6 +5,7 @@ import { Input } from "~/components/ui/input"
 import { Button } from "~/components/ui/button"
 import { Label } from "~/components/ui/label"
 import { useContact } from "~/modules/contact/hooks/useContact"
+import { contactMessages } from "~/modules/landing/data/contact" // update path if needed
 
 export function ContactSection() {
   const [formData, setFormData] = useState({
@@ -15,14 +16,19 @@ export function ContactSection() {
   })
 
   const [errors, setErrors] = useState<Record<string, string>>({})
+  const [submitted, setSubmitted] = useState(false)
+  const [alreadyExists, setAlreadyExists] = useState(false)
 
   const { submit, isLoading } = useContact({
     onSuccess: () => {
-      alert("Form submitted!")
+      setSubmitted(true)
       setFormData({ firstName: "", lastName: "", phone: "", email: "" })
     },
+    onDuplicate: () => {
+      setAlreadyExists(true)
+    },
     onError: (message) => {
-      alert(message)
+      setErrors({ general: message })
     },
   })
 
@@ -46,8 +52,24 @@ export function ContactSection() {
     }
 
     setErrors({})
-    void submit({ ...formData }) // ✅ Fix floating promise
+    void submit(formData)
   }
+
+  const reset = () => {
+    setSubmitted(false)
+    setAlreadyExists(false)
+    setErrors({})
+  }
+
+  const showMessage = submitted || alreadyExists
+
+  const title = alreadyExists
+    ? contactMessages.duplicateTitle
+    : contactMessages.successTitle
+
+  const body = alreadyExists
+    ? contactMessages.duplicateBody
+    : contactMessages.successBody
 
   return (
     <section id="contact" className="w-full bg-muted/50 py-20 border-t border-border">
@@ -57,37 +79,49 @@ export function ContactSection() {
           Leave your details and we’ll get in touch with you shortly.
         </p>
 
-        <form onSubmit={handleSubmit} className="space-y-6 text-left">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <Label htmlFor="firstName">First Name</Label>
-              <Input id="firstName" value={formData.firstName} onChange={handleChange} />
-              {errors.firstName && <p className="text-sm text-red-500 mt-1">{errors.firstName}</p>}
+        {showMessage ? (
+          <div className="text-center space-y-4 py-10">
+            <h3 className="text-2xl font-semibold">{title}</h3>
+            <p className="text-muted-foreground">{body}</p>
+            <Button variant="ghost" onClick={reset}>
+              {contactMessages.resetLabel}
+            </Button>
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit} className="space-y-6 text-left">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="firstName">First Name</Label>
+                <Input id="firstName" value={formData.firstName} onChange={handleChange} />
+                {errors.firstName && <p className="text-sm text-red-500 mt-1">{errors.firstName}</p>}
+              </div>
+
+              <div>
+                <Label htmlFor="lastName">Last Name</Label>
+                <Input id="lastName" value={formData.lastName} onChange={handleChange} />
+                {errors.lastName && <p className="text-sm text-red-500 mt-1">{errors.lastName}</p>}
+              </div>
             </div>
 
             <div>
-              <Label htmlFor="lastName">Last Name</Label>
-              <Input id="lastName" value={formData.lastName} onChange={handleChange} />
-              {errors.lastName && <p className="text-sm text-red-500 mt-1">{errors.lastName}</p>}
+              <Label htmlFor="phone">Phone</Label>
+              <Input id="phone" value={formData.phone} onChange={handleChange} />
+              {errors.phone && <p className="text-sm text-red-500 mt-1">{errors.phone}</p>}
             </div>
-          </div>
 
-          <div>
-            <Label htmlFor="phone">Phone</Label>
-            <Input id="phone" value={formData.phone} onChange={handleChange} />
-            {errors.phone && <p className="text-sm text-red-500 mt-1">{errors.phone}</p>}
-          </div>
+            <div>
+              <Label htmlFor="email">Email</Label>
+              <Input id="email" type="email" value={formData.email} onChange={handleChange} />
+              {errors.email && <p className="text-sm text-red-500 mt-1">{errors.email}</p>}
+            </div>
 
-          <div>
-            <Label htmlFor="email">Email</Label>
-            <Input id="email" type="email" value={formData.email} onChange={handleChange} />
-            {errors.email && <p className="text-sm text-red-500 mt-1">{errors.email}</p>}
-          </div>
+            <Button type="submit" className="w-full" disabled={isLoading}>
+              {isLoading ? "Submitting..." : "Submit"}
+            </Button>
 
-          <Button type="submit" className="w-full" disabled={isLoading}>
-            {isLoading ? "Submitting..." : "Submit"}
-          </Button>
-        </form>
+            {errors.general && <p className="text-sm text-red-500 mt-2">{errors.general}</p>}
+          </form>
+        )}
       </div>
     </section>
   )

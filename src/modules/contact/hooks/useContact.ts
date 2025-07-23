@@ -1,27 +1,33 @@
 "use client"
 
 import { api } from "~/utils/api"
+import { TRPCClientError } from "@trpc/client"
+import type { AppRouter } from "~/server/api/root"
+import type { ContactInput } from "~/modules/contact/logic/contactSchema"
 
 export function useContact({
   onSuccess,
   onError,
+  onDuplicate,
 }: {
-  onSuccess?: (data: unknown) => void // ✅ Replace `any` with `unknown`
+  onSuccess?: (data: unknown) => void
   onError?: (message: string) => void
+  onDuplicate?: () => void
 } = {}) {
   const mutation = api.contact.submit.useMutation()
 
-  const submit = async (formData: {
-    firstName: string
-    lastName: string
-    phone: string
-    email: string
-  }) => {
+  const submit = async (formData: ContactInput) => {
     try {
       const result = await mutation.mutateAsync(formData)
       onSuccess?.(result)
-    } catch {
-      // ✅ Removed unused `err` variable
+    } catch (err) {
+      if (err instanceof TRPCClientError<AppRouter>) {
+        if (err.data?.code === "CONFLICT") {
+          onDuplicate?.()
+          return
+        }
+      }
+
       onError?.("Failed to submit contact")
     }
   }

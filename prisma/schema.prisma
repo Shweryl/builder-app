@@ -14,4 +14,6 @@ model Contact {
   phone     String
   email     String
   createdAt DateTime @default(now())
+
+  @@unique([email, phone])
 }
