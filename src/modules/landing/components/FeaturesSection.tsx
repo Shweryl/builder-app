@@ -4,6 +4,7 @@ import React from "react"
 import { featuresSection } from "../data/features"
 import { LightbulbIcon, ZapIcon, RocketIcon } from "lucide-react"
 
+
 const iconMap = {
   LightbulbIcon,
   ZapIcon,
@@ -28,7 +29,7 @@ export function FeaturesSection() {
                 key={title}
                 className="bg-background rounded-2xl p-6 border border-border shadow-sm text-center"
               >
-                <Icon className="mx-auto mb-4 h-8 w-8 text-primary" />
+                <Icon className="mx-auto mb-4 h-8 w-8 text-chart-2" />
                 <h3 className="text-xl font-semibold mb-2">{title}</h3>
                 <p className="text-muted-foreground text-sm">{description}</p>
               </div>

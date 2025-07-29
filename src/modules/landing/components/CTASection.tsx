@@ -4,6 +4,8 @@ import React from "react"
 import Link from "next/link"
 import { Button } from "~/components/ui/button"
 import { tiers, ctaSection } from "../data/tiers"
+import { CheckCheck } from "lucide-react"
+
 
 export function CTASection() {
   return (
@@ -26,10 +28,13 @@ export function CTASection() {
               <div className="text-3xl font-bold mb-4">{price}</div>
               <ul className="text-sm text-muted-foreground space-y-2 mb-6 text-left">
                 {features.map((f) => (
-                  <li key={f}>• {f}</li>
+                  <li key={f} className="flex"> 
+                  <CheckCheck/>
+                  <span className="ml-2">{f}</span>
+                  </li>
                 ))}
               </ul>
-              <Button asChild className="w-full">
+              <Button asChild className="w-full bg-green-300">
                 <Link href="/#contact">Get Started</Link>
               </Button>
             </div>
