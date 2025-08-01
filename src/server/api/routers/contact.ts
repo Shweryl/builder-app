@@ -6,6 +6,7 @@ import { TRPCError } from "@trpc/server"
 import { Prisma } from "@prisma/client"
 
 export const contactRouter = createTRPCRouter({
+  
   submit: publicProcedure
     .input(ContactInputSchema)
     .mutation(async ({ input }) => {
@@ -29,3 +30,4 @@ export const contactRouter = createTRPCRouter({
       }
     }),
 })
+

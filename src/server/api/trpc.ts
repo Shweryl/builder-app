@@ -10,8 +10,12 @@ import { initTRPC } from "@trpc/server";
 import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
 import superjson from "superjson";
 import { ZodError } from "zod";
+import { appRouter } from "~/server/api/root";
+
+
 
 import { db } from "~/server/db";
+
 
 /**
  * 1. CONTEXT
@@ -22,6 +26,14 @@ import { db } from "~/server/db";
  */
 
 type CreateContextOptions = Record<string, never>;
+
+
+// This helper function for tests should accept the db object
+export const createContextInner = async (opts: { db: typeof db }) => {
+  return {
+    db: opts.db,
+  };
+};
 
 /**
  * This helper generates the "internals" for a tRPC context. If you need to use it, you can export
@@ -92,6 +104,9 @@ export const createCallerFactory = t.createCallerFactory;
  */
 export const createTRPCRouter = t.router;
 
+
+
+
 /**
  * Middleware for timing procedure execution and adding an artificial delay in development.
  *
@@ -123,3 +138,10 @@ const timingMiddleware = t.middleware(async ({ next, path }) => {
  * are logged in.
  */
 export const publicProcedure = t.procedure.use(timingMiddleware);
+
+
+
+// export const createCaller = (ctx: { db: typeof db; session: null }) =>
+//   appRouter.createCaller(ctx);
+
+export const createCaller = (ctx: { session: null; db: typeof db }) => appRouter.createCaller(ctx);

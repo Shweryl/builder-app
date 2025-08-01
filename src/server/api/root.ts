@@ -1,5 +1,6 @@
 import { contactRouter } from "~/server/api/routers/contact";
 import { createCallerFactory, createTRPCRouter } from "~/server/api/trpc";
+import { createTRPCContext } from "~/server/api/trpc"; // import your context creator
 
 /**
  * This is the primary router for your server.
@@ -20,4 +21,5 @@ export type AppRouter = typeof appRouter;
  * const res = await trpc.post.all();
  *       ^? Post[]
  */
-export const createCaller = createCallerFactory(appRouter);
+//export const createCaller = createCallerFactory(appRouter);
+export const createCaller = createCallerFactory(() => createTRPCContext({}));

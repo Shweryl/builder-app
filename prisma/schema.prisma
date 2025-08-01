@@ -5,6 +5,7 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  directUrl = env(DIRECT_URL)
 }
 
 model Contact {
@@ -12,7 +13,7 @@ model Contact {
   firstName String
   lastName  String
   phone     String
-  email     String
+  email     String 
   createdAt DateTime @default(now())
 
   @@unique([email, phone])
