@@ -11,6 +11,6 @@ export const headerData = {
     { label: "Start", href: "/#hero" },
     { label: "Features", href: "/#features" },
     { label: "Entry Points", href: "/#cta" },
-    { label: "Connect", href: "/#contact" },
+    { label: "Connect", href: "/demo/#contact" },
   ],
 }

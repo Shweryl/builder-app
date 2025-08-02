@@ -35,7 +35,7 @@ export function CTASection() {
                 ))}
               </ul>
               <Button asChild className="w-full bg-green-300">
-                <Link href="/#contact">Get Started</Link>
+                <Link href="/demo/#contact">Get Started</Link>
               </Button>
             </div>
           ))}
