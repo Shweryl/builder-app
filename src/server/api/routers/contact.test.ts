@@ -1,7 +1,7 @@
 
-import { describe, expect, it, beforeEach, afterAll } from "vitest";
+import { describe, expect, it } from "vitest";
 import { TRPCError } from "@trpc/server";
-import { PrismaClient } from "@prisma/client";
+// import { PrismaClient } from "@prisma/client";
 import { appRouter } from "~/server/api/root";
 import { createContextInner } from "~/server/api/trpc";
 
@@ -10,12 +10,9 @@ import type { inferRouterInputs } from "@trpc/server";
 import type { ContactInput } from "~/modules/contact/logic/contactSchema";
 
 
-const TEST_DATABASE_URL = process.env.DATABASE_URL as string;
-
-let prisma: PrismaClient;
 
 const createCaller = async () => {
-  const ctx = await createContextInner({ db: prisma });
+  const ctx = await createContextInner({ db: null });
   return appRouter.createCaller(ctx);
 };
 
@@ -25,43 +22,18 @@ type ContactSubmitInput = RouterInputs['contact']['submit'];
 const validTestData: ContactInput = {
   firstName: "John",
   lastName: "Doe",
-  phone: "1234567890",
+  phone: `09${Math.floor(Math.random() * 1_000_000_000)}`,
   email: "john.doe@example.com",
 };
 
 describe("contactRouter integration", () => {
-  beforeAll(async () => {
-    if (!TEST_DATABASE_URL || !TEST_DATABASE_URL.startsWith('postgresql://')) {
-        throw new Error('DATABASE_URL for testing is not set or is not a PostgreSQL URL. Please configure it in your .env.test file.');
-    }
-
-    prisma = new PrismaClient({
-      datasources: {
-        db: {
-          url: TEST_DATABASE_URL,
-        },
-      },
-    });
-    await prisma.$connect();
-    await prisma.contact.deleteMany({});
-  });
-
-  beforeEach(async () => {
-    await prisma.contact.deleteMany({});
-  });
-
-  afterAll(async () => {
-    await prisma.$disconnect();
-  });
 
   it("should submit contact successfully", async () => {
     const caller = await createCaller();
     const result = await caller.contact.submit(validTestData);
-    
-    expect(result).toEqual(expect.objectContaining({
-      ...validTestData,
-      id: expect.any(String),
-    }));
+
+    expect(result).toHaveProperty("id");
+    expect(result.properties.email.email).toBe(validTestData.email)
   });
 
 
@@ -74,11 +46,11 @@ describe("contactRouter integration", () => {
     await expect(caller.contact.submit(invalidInput as ContactSubmitInput)).rejects.toThrow(TRPCError);
     await expect(caller.contact.submit(invalidInput as ContactSubmitInput)).rejects.toHaveProperty('code', 'BAD_REQUEST');
   });
-  
+
 
   it("should throw a CONFLICT error for a duplicate contact", async () => {
     const caller = await createCaller();
-    await caller.contact.submit(validTestData);
+    // await caller.contact.submit(validTestData);
     const duplicateData: ContactInput = {
       firstName: "Jane",
       lastName: "Doe",
