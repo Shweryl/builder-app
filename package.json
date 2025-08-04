@@ -24,6 +24,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@notionhq/client": "^4.0.1",
     "@prisma/client": "^6.5.0",
     "@radix-ui/themes": "^3.2.1",
     "@t3-oss/env-nextjs": "^0.12.0",

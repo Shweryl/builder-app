@@ -18,6 +18,6 @@ describe("submitContact()", () => {
     const result = await submitContact(testData)
 
     expect(result).toHaveProperty("id")
-    expect(result.email).toBe(testData.email)
+    expect(result.properties.email.email).toBe(testData.email)
   })
 })

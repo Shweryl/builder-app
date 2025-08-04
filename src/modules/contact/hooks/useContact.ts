@@ -20,6 +20,7 @@ export function useContact({
       const result = await mutation.mutateAsync(formData)
       onSuccess?.(result)
     } catch (err) {
+      console.log(err);
       if (
         err instanceof TRPCClientError &&
         typeof err.data === "object" &&
