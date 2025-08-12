@@ -115,7 +115,7 @@ export function ContactSection() {
               {errors.email && <p className="text-sm text-red-500 mt-1">{errors.email}</p>}
             </div>
 
-            <Button type="submit" className="w-full bg-green-300" disabled={isLoading}>
+            <Button type="submit" className="w-full bg-chart-2" disabled={isLoading}>
               {isLoading ? "Submitting..." : "Submit"}
             </Button>
 
