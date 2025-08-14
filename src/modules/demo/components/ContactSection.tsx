@@ -83,7 +83,7 @@ export function ContactSection() {
           <div className="text-center space-y-4 py-10">
             <h3 className="text-2xl font-semibold">{title}</h3>
             <p className="text-muted-foreground">{body}</p>
-            <Button variant="ghost" onClick={reset}>
+            <Button variant="default" onClick={reset}>
               {contactMessages.resetLabel}
             </Button>
           </div>
@@ -115,7 +115,7 @@ export function ContactSection() {
               {errors.email && <p className="text-sm text-red-500 mt-1">{errors.email}</p>}
             </div>
 
-            <Button type="submit" className="w-full bg-chart-2" disabled={isLoading}>
+            <Button type="submit" variant="default" className="w-full" disabled={isLoading}>
               {isLoading ? "Submitting..." : "Submit"}
             </Button>
 

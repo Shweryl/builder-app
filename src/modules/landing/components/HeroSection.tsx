@@ -15,7 +15,7 @@ export function HeroSection() {
         <p className="text-muted-foreground text-lg md:text-xl mb-8">
           {hero.subheadline}
         </p>
-        <Button asChild size="lg" className="bg-chart-2">
+        <Button asChild size="lg" variant="default">
           <Link href={hero.ctaHref}>{hero.ctaLabel}</Link>
         </Button>
         <p className="mt-6 text-sm text-muted-foreground">{hero.tagline}</p>
