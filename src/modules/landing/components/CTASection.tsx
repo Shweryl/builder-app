@@ -34,7 +34,7 @@ export function CTASection() {
                   </li>
                 ))}
               </ul>
-              <Button asChild className="w-full bg-chart-2">
+              <Button asChild variant="default" size="lg">
                 <Link href="/demo">Get Started</Link>
               </Button>
             </div>
