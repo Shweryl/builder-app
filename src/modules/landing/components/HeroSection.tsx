@@ -3,7 +3,8 @@
 import React from "react"
 import Link from "next/link"
 import { hero } from "../data/hero"
-import { Button } from "~/components/ui/button"
+// import { Button } from "~/components/ui/button"
+import { Button } from "@radix-ui/themes"
 
 export function HeroSection() {
   return (
@@ -15,7 +16,7 @@ export function HeroSection() {
         <p className="text-muted-foreground text-lg md:text-xl mb-8">
           {hero.subheadline}
         </p>
-        <Button asChild size="lg" variant="default">
+        <Button asChild size="3" variant="solid">
           <Link href={hero.ctaHref}>{hero.ctaLabel}</Link>
         </Button>
         <p className="mt-6 text-sm text-muted-foreground">{hero.tagline}</p>

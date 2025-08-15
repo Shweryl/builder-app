@@ -2,7 +2,8 @@
 
 import React from "react"
 import Link from "next/link"
-import { Button } from "~/components/ui/button"
+import { Button } from "@radix-ui/themes"
+// import { Button } from "~/components/ui/button"
 import { tiers, ctaSection } from "../data/tiers"
 import { CheckCheck } from "lucide-react"
 
@@ -34,7 +35,7 @@ export function CTASection() {
                   </li>
                 ))}
               </ul>
-              <Button asChild variant="default" size="lg">
+              <Button asChild variant="solid" size="3">
                 <Link href="/demo">Get Started</Link>
               </Button>
             </div>
