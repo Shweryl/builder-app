@@ -1,9 +1,9 @@
 "use client"
 
 import React, { useState } from "react"
-import { Input } from "~/components/ui/input"
-import { Button } from "~/components/ui/button"
-import { Label } from "~/components/ui/label"
+import { TextField } from "@radix-ui/themes"
+import { Button } from "@radix-ui/themes"
+import { Label } from "radix-ui";
 import { useContact } from "~/modules/contact/hooks/useContact"
 import { contactMessages } from "~/modules/demo/data/contact" // update path if needed
 
@@ -83,7 +83,7 @@ export function ContactSection() {
           <div className="text-center space-y-4 py-10">
             <h3 className="text-2xl font-semibold">{title}</h3>
             <p className="text-muted-foreground">{body}</p>
-            <Button variant="default" onClick={reset}>
+            <Button variant="solid" onClick={reset}>
               {contactMessages.resetLabel}
             </Button>
           </div>
@@ -91,33 +91,36 @@ export function ContactSection() {
           <form onSubmit={handleSubmit} className="space-y-6 text-left">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <Label htmlFor="firstName" className="mb-2">First Name</Label>
-                <Input id="firstName" value={formData.firstName} onChange={handleChange} />
+                <Label.Root htmlFor="firstName">First name</Label.Root>
+                <TextField.Root className="!mt-2" size="3" variant="classic" id="firstName" value={formData.firstName} onChange={handleChange} />
                 {errors.firstName && <p className="text-sm text-red-500 mt-1">{errors.firstName}</p>}
               </div>
 
               <div>
-                <Label htmlFor="lastName" className="mb-2">Last Name</Label>
-                <Input id="lastName" value={formData.lastName} onChange={handleChange} />
+                <Label.Root htmlFor="lastName">Last name</Label.Root>
+                <TextField.Root className="!mt-2" size="3" variant="classic" id="lastName" value={formData.lastName} onChange={handleChange} />
                 {errors.lastName && <p className="text-sm text-red-500 mt-1">{errors.lastName}</p>}
               </div>
             </div>
 
             <div>
-              <Label htmlFor="phone" className="mb-2">Phone</Label>
-              <Input id="phone" value={formData.phone} onChange={handleChange} />
+              <Label.Root htmlFor="phone">Phone</Label.Root>
+              <TextField.Root className="!mt-2" size="3" variant="classic" id="phone" value={formData.phone} onChange={handleChange} />
               {errors.phone && <p className="text-sm text-red-500 mt-1">{errors.phone}</p>}
             </div>
 
             <div>
-              <Label htmlFor="email" className="mb-2">Email</Label>
-              <Input id="email" type="email" value={formData.email} onChange={handleChange} />
+              <Label.Root htmlFor="email">Email</Label.Root>
+              <TextField.Root className="!mt-2" size="3" variant="classic" id="email" value={formData.email} onChange={handleChange} />
               {errors.email && <p className="text-sm text-red-500 mt-1">{errors.email}</p>}
             </div>
 
-            <Button type="submit" variant="default" className="w-full" disabled={isLoading}>
-              {isLoading ? "Submitting..." : "Submit"}
-            </Button>
+            <div>
+              <Button type="submit" variant="solid" size="3" className="!w-full" disabled={isLoading}>
+                {isLoading ? "Submitting..." : "Submit"}
+              </Button>
+            </div>
+
 
             {errors.general && <p className="text-sm text-red-500 mt-2">{errors.general}</p>}
           </form>
